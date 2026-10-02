@@ -22,6 +22,7 @@ list_col_names = [
     'company_sizes',
     'domains']
 
-df = ps.scan_ndjson("./data/sample_jobs_tech.jsonl")
+#Need to ignore errors
+df = ps.scan_ndjson("./data/sample_jobs_tech.jsonl", ignore_errors=True)
 df = df.select(list_col_names).filter(ps.col("is_tech") == True).collect()
 df.write_ndjson("./data/sample_jobs_tech.jsonl")
