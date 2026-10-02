@@ -29,3 +29,10 @@ Extract + Transform:
 Load:
     - Apache Airflow = orchestrator
         - Will call pure SQL scripts to create the DB Model and Load the data
+
+
+## Project organization
+
+- resources = contains utility scripts
+- data = contains raw data
+- root = contains exploratory scripts
