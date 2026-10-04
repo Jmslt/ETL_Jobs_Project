@@ -13,4 +13,17 @@ https://learn.microsoft.com/en-us/sql/linux/containers/configure?view=sql-server
 
 # AIRFLOW ON LINUX
 
+For now, using full dev image: https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/
 
+Ideally we craft our own slim image following these instructions and modifying the docker-compose to
+remove what we don't need:
+
+https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/overview.html
+
+https://github.com/apache/airflow/discussions/29398
+
+https://github.com/apache/airflow/discussions/34674
+
+https://airflow.apache.org/docs/apache-airflow/stable/extra-packages-ref.html
+
+https://airflow.apache.org/docs/docker-stack/build.html
