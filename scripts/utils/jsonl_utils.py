@@ -6,13 +6,13 @@ import json
 from fileinput import FileInput
 
 
-def validateJSONL(file, nbrOfChars):
+def validateJSONL(file, nbrOfCharsBefore=5, nbrOfCharsAfter=0, printLine=False):
     '''Iterates over the lines of a jsonl file and
     validates the line is correct. If it is not
     valid jsonl, it will print the number of errors
     and the characters that caused them.
     nbrOFChars -> chars to print before error chars
-    => 10 is great for most cases'''
+    => 5 is great for most cases'''
 
     with open(file, "r") as jsonlFile:
         countErrors = 0
@@ -21,20 +21,22 @@ def validateJSONL(file, nbrOfChars):
             try:
                 json.loads(line)
             except json.JSONDecodeError as e:
-#                print(f"Invalid JSON on line {line_number}")
+                if printLine is True:
+                    print(f"Invalid JSON on line {line_number}")
 #                print(f"Error: {e.msg}")
 #                print(f"Position: {e.pos}")
-                errorCharsStr = line[e.pos-nbrOfChars:e.pos]
+                errorCharsStr = line[e.pos-nbrOfCharsBefore:e.pos+nbrOfCharsAfter]
                 countErrors += 1
                 errorCharsSet.add(errorCharsStr)
 #               print(f"Error characters: {errorCharsStr}")
                 continue
         print(f"There are {countErrors} errors in jsonl file ")
-        print(f"The errors were related to the characters: \n")
+        print("The errors were related to the characters: \n")
         return errorCharsSet
 
+
 def cleanJSONL(file):
-    '''Cleans out the \\\<doublequote> that makes 
+    '''Cleans out the <doublequote> that makes
     the jsonl file unusable '''
     with FileInput(file, inplace=True) as jsonlFile:
         for line in jsonlFile:
