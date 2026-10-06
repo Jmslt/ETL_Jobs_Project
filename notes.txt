@@ -1,0 +1,20 @@
+The JSONL were not valid: the problem was the '\\\\"' pattern.I wrote a python script to delete
+these.
+4 lines remained unreadable after this, because of a combination of HTML and double quotes.
+  I decided to drop them.
+
+Loading:
+- Polars infers type, so I need to provide a schema to get strings
+- Problem is that Polars LF does not support writing to DB
+- It also does not support NVARCHAR apparently
+---> SOlution:
+  - For each file, if above a certain size, select only a part of it as LF.
+  - Convert LF to PD.DF, which support writing to DB with NVARCHAR
+
+Problem: I tested with only the 'description' column as NVARCHAR in the schema (table created
+beforehand with SQL script), and it seems that the columns with lists (ex: skills) are now empty in
+the DB
+--> Try to not create the DB beforehand to see how PD handles it
+--> If not, then try to set all fields to NVARCHAR(MAX) in SQL script
+--> IF NOT, then only NVARCHAR for select columns and we accept that some columns will become
+corrupted because of other alphabets
