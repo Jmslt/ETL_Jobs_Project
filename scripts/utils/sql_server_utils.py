@@ -19,9 +19,9 @@ def create_sqlserver_engine(conn_string, autocommit=False):
     return source_engine
 
 
-def create_bronze_db(engine_with_autocommit_true):
+def create_db(engine_with_autocommit_true, db_name):
     with engine_with_autocommit_true.connect() as conn:
-        conn.execute(text("CREATE DATABASE [tfe_bronze]"))
+        conn.execute(text(f"CREATE DATABASE [{db_name}]"))
 #    conn.commit()
 #    result = conn.execute(text(query2))
 #    df = pd.DataFrame(result.fetchall(), columns=result.keys())
