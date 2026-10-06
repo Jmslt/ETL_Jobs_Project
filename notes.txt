@@ -18,3 +18,11 @@ the DB
 --> If not, then try to set all fields to NVARCHAR(MAX) in SQL script
 --> IF NOT, then only NVARCHAR for select columns and we accept that some columns will become
 corrupted because of other alphabets
+
+
+QUESTIONS:
+- Should I use PL at all? I will need to use a PD DF to send to DB anyway. SOme files are heavy
+  though, so I need to find a way to slice them. I can look into PD DF nrows and chunksize args when
+readin jsonl. I dont need a lot of data in the memeory at once, I can just batch my loadings into
+the db.
+- Is it better to merge all jsonl to one big file?
