@@ -6,7 +6,7 @@ def generate_conn_string():
     password = "Admin12345!"
     host = "127.0.0.1"
     port = 1435
-    database_source = "master"
+    database_source = "bronze_tfe"
     generated_conn_string = f"mssql+pyodbc://{user}:{password}@{host}:{port}/{database_source}?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
     return generated_conn_string
 
