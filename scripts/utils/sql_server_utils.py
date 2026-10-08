@@ -2,12 +2,12 @@ from sqlalchemy import create_engine, text
 import pyarrow as pa
 import mssql_python
 
-def generate_conn_string():
+def generate_conn_string(db):
     user = "sa"
     password = "Admin12345!"
     host = "localhost"
     port = 1435
-    database_source = "bronze_tfe"
+    database_source = db
     generated_conn_string = f"mssql+pyodbc://{user}:{password}@{host}:{port}/{database_source}?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
     return generated_conn_string
 
