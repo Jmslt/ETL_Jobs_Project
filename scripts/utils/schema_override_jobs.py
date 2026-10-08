@@ -2,7 +2,7 @@ from sqlalchemy import NVARCHAR, String
 import polars as pl
 
 
-list_columns = ['public_slug',
+list_columns_complete = ['public_slug',
                 'source',
                 'title',
                 'company',
@@ -45,7 +45,7 @@ list_columns = ['public_slug',
                 'yc_flags']
 
 #TODO refactor to generate this with a function
-schema_columns = {'public_slug': NVARCHAR,
+schema_columns_pd = {'public_slug': NVARCHAR,
                 'source': NVARCHAR,
                 'title': NVARCHAR,
                 'company': NVARCHAR,
@@ -87,10 +87,18 @@ schema_columns = {'public_slug': NVARCHAR,
                 'yc_stage': String,
                 'yc_flags': String}
 
-schema_polars = {}
+schema_complete_pl = {}
 
 def get_schema_jobs_pl():
-    for col in list_columns:
-        schema_polars.update({col: pl.String})
-    return schema_polars
+    for col in list_columns_complete:
+        schema_complete_pl.update({col: pl.String})
+    return schema_complete_pl
+
+def get_schema_nolist(schema_complete):
+    list_col_remove = ["countries", "skills", "cities", "company_industries", "company_types", "company_sizes", "domains"]
+    schema_no_list = schema_complete.copy()
+    for col in list_col_remove:
+        schema_no_list.pop(col)
+
+    return schema_no_list
 
