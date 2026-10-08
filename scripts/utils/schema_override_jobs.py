@@ -1,4 +1,5 @@
-from sqlalchemy import NVARCHAR
+from sqlalchemy import NVARCHAR, String
+import polars as pl
 
 
 list_columns = ['public_slug',
@@ -43,10 +44,53 @@ list_columns = ['public_slug',
                 'yc_stage',
                 'yc_flags']
 
-schema_dict = {}
+#TODO refactor to generate this with a function
+schema_columns = {'public_slug': NVARCHAR,
+                'source': NVARCHAR,
+                'title': NVARCHAR,
+                'company': NVARCHAR,
+                'company_slug': NVARCHAR,
+                'location': NVARCHAR,
+                'description': NVARCHAR,
+                'url': NVARCHAR,
+                'posted_at': NVARCHAR,
+                'created_at': NVARCHAR,
+                'updated_at': NVARCHAR,
+                'closed_at': NVARCHAR,
+                'countries': String,
+                'regions': NVARCHAR,
+                'work_mode': String,
+                'skills': NVARCHAR,
+                'cities': NVARCHAR,
+                'collections': NVARCHAR,
+                'is_tech': String,
+                'seniority': NVARCHAR,
+                'category': NVARCHAR,
+                'posting_language': NVARCHAR,
+                'employment_type': NVARCHAR,
+                'education_level': NVARCHAR,
+                'english_level': NVARCHAR,
+                'experience_years_min': NVARCHAR,
+                'salary_min': NVARCHAR,
+                'salary_max': NVARCHAR,
+                'salary_currency': NVARCHAR,
+                'salary_period': NVARCHAR,
+                'company_name': NVARCHAR,
+                'company_tagline': NVARCHAR,
+                'company_industries': String,
+                'company_hq_country': NVARCHAR,
+                'company_types': String,
+                'company_sizes': String,
+                'domains': String,
+                'yc_batch': String,
+                'yc_status': String,
+                'yc_stage': String,
+                'yc_flags': String}
 
-#TODO : check if lists in jsonl are correctly cast
-def set_schema_jobs(list_columns):
+schema_polars = {}
+
+def get_schema_jobs_pl():
     for col in list_columns:
-        schema_dict.update({col: NVARCHAR})
-    return schema_dict
+        schema_polars.update({col: pl.String})
+    return schema_polars
+

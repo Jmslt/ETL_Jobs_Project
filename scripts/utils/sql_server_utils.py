@@ -1,10 +1,11 @@
 from sqlalchemy import create_engine, text
-
+import pyarrow as pa
+import mssql_python
 
 def generate_conn_string():
     user = "sa"
     password = "Admin12345!"
-    host = "127.0.0.1"
+    host = "localhost"
     port = 1435
     database_source = "bronze_tfe"
     generated_conn_string = f"mssql+pyodbc://{user}:{password}@{host}:{port}/{database_source}?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
@@ -13,6 +14,7 @@ def generate_conn_string():
 
 def create_sqlserver_engine(conn_string, autocommit=False):
     if autocommit is True:
+        #TODO check if possible with cursor
         source_engine = create_engine(conn_string).execution_options(isolation_level="AUTOCOMMIT")
     elif autocommit is False:
         source_engine = create_engine(conn_string)
