@@ -10,7 +10,7 @@ from utils.sql_server_utils import generate_conn_string, create_sqlserver_engine
 def load_to_bronze():
     file_nbr = 0
     current_offset = 0
-    conn_string = generate_conn_string("V2_bronze_tfe")
+    conn_string = generate_conn_string("bronze_tfe")
     sql_engine = create_sqlserver_engine(conn_string)
     for file in os.scandir("/home/jm/projects/tfe/jobs_data_sample/"):
         df_postings = pl.read_ndjson(file.path, row_index_name="job_id",

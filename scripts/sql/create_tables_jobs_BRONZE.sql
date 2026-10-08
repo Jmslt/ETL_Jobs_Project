@@ -1,4 +1,4 @@
-USE V2_bronze_tfe
+USE bronze_tfe
 GO
 
 
