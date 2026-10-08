@@ -26,3 +26,16 @@ QUESTIONS:
 readin jsonl. I dont need a lot of data in the memeory at once, I can just batch my loadings into
 the db.
 - Is it better to merge all jsonl to one big file?
+
+-----------------
+
+08/10/2026
+
+Changed bronze strategy: form one Table with all rows/columns, mltiple tables for the columns with
+lists and a unique ID for each job posting
+
+For survey data: not lists, the multiple data in one column are in fact one string. I need to check
+if it is possible to get a list directly or if I need to parse the String manually
+--> We will make multiple tables as well, for 2025 at first. If we add other years, we will have to
+add the year to those tables as well and find a way to manage the responder_ID (probably in the same
+way as jobs, and we keep the native as well for each year like 'year_responder_id')
