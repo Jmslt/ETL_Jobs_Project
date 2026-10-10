@@ -52,3 +52,19 @@ specialized for DW. Need to look into it.
 DATA in SILVER:
 - Replacing NULLs with other kinds of data: 0, 'unknown', 'undetermined' etc... Because NULL is too
   vague and could mean error, absence of data etc
+
+I also explored how to change the String in the SO csv to a List of String = this allows us to use
+pl.explode(). The strings were formatted as: "skill1;skill2", but I needed them like:
+["skill1","skill2"]. The following works:
+
+df_languages_worked_with = df.with_columns(LanguageHaveWorkedWith = (df.get_column("LanguageHaveWorkedWith").explode().str.split(";"))).select("ResponseId", "LanguageHaveWorkedWith").explode("LanguageHaveWorkedWith")
+
+-----------------
+10/10/2026
+
+Took the basis of the Jobs posting preparation and adapted it to the CSV. While there is less
+cleaning to be done, there are more dataframes to create and to format so they can be adapted to the
+tables in Bronze.
+
+I have not yet checked how to deal with the main Table survey_answers, but I think the solution will
+be to rearrange columns so that 'survey_year' is on 3rd position before writing to table.
