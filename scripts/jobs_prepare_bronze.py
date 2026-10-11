@@ -13,18 +13,23 @@ def load_to_bronze():
     conn_string = generate_conn_string("bronze_tfe")
     sql_engine = create_sqlserver_engine(conn_string)
     for file in os.scandir("/home/jm/projects/tfe/jobs_data_sample/"):
-        df_postings = pl.read_ndjson(file.path, row_index_name="job_id",
+        df_postings = pl.DataFrame()
+        if file_nbr == 0:
+            df_postings = pl.read_ndjson(file.path, row_index_name="job_id",
                                      ignore_errors=True)
 
-        jobs_countries = df_postings.select("job_id",
-                                            "countries").explode("countries",empty_as_null=True)
+        else:
+            df_postings = pl.read_ndjson(file.path, ignore_errors=True)
+            df_postings = df_postings.with_row_index("job_id", offset=current_offset)
+        
+
+        jobs_countries = df_postings.select("job_id","countries").explode("countries",empty_as_null=True)
         jobs_countries.table = "dbo.jobs_countries"
         jobs_skills = df_postings.select("job_id", "skills").explode("skills",empty_as_null=True)
         jobs_skills.table = "dbo.jobs_skills"
         jobs_cities = df_postings.select("job_id", "cities").explode("cities",empty_as_null=True) 
         jobs_cities.table = "dbo.jobs_cities"
-        jobs_company_industries = df_postings.select("job_id",
-                                          "company_industries").explode("company_industries",empty_as_null=True)
+        jobs_company_industries = df_postings.select("job_id","company_industries").explode("company_industries",empty_as_null=True)
         jobs_company_industries.table = "dbo.jobs_company_industries"
         jobs_company_types = df_postings.select("job_id", "company_types").explode("company_types",empty_as_null=True)
         jobs_company_types.table = "dbo.jobs_company_types"
