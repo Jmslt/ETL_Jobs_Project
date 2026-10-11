@@ -5,6 +5,7 @@ import polars as pl
 list_columns_complete_2025 = [
                 'answer_id',
                 'ResponseId',
+                'survey_year',
                 'MainBranch',
                 'Age',
                 'EdLevel',
@@ -59,6 +60,7 @@ def get_schema_nolist_2025(schema_complete_2025):
 list_columns_complete_22_24 = [
                 'answer_id',
                 'ResponseId',
+                'survey_year',
                 'MainBranch',
                 'Age',
                 'EdLevel',
