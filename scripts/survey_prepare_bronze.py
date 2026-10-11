@@ -14,10 +14,21 @@ def load_to_bronze():
     conn_string = generate_conn_string("bronze_tfe")
     sql_engine = create_sqlserver_engine(conn_string)
     for file in os.scandir("/home/jm/projects/tfe/so_data_raw/answers/"):
-        df_survey = pl.read_csv(file.path, row_index_name="answer_id")
-        file_year = file.name[0:4]
+        df_survey = pl.DataFrame()
+        if file_nbr == 0:
+            df_survey = pl.read_csv(file.path, row_index_name="answer_id")
+            file_year = file.name[0:4]
+            df_survey = df_survey.with_columns([pl.lit(file_year).alias("survey_year")])
 
-        df_survey = df_survey.with_columns([pl.lit(file_year).alias("survey_year")])
+        else:
+            df_survey = pl.read_csv(file.path)
+            file_year = file.name[0:4]
+            df_survey = df_survey.with_row_index("answer_id", offset=current_offset)
+            df_survey = df_survey.with_columns([pl.lit(file_year).alias("survey_year")])
+
+
+
+
 
         df_languages_worked = df_survey.with_columns(LanguageHaveWorkedWith = (df_survey.get_column("LanguageHaveWorkedWith").explode(empty_as_null=True).str.split(";"))).select("answer_id","ResponseId","survey_year","LanguageHaveWorkedWith").explode("LanguageHaveWorkedWith",empty_as_null=True)
         df_languages_worked = df_languages_worked.rename({"LanguageHaveWorkedWith": "language"})
