@@ -77,7 +77,7 @@ def load_to_bronze():
         df_webframe_want = df_webframe_want.rename({"WebframeWantToWorkWith": "web_framework"})
         df_webframe_want = df_webframe_want.with_columns([pl.lit("NA").alias("worked_with")])
         df_webframe_want = df_webframe_want.with_columns([pl.lit("True").alias("want_to_work_with")])
-        df_webframe_want.table = "dbo_survey_web_frameworks"
+        df_webframe_want.table = "dbo.survey_web_frameworks"
 
         if file_year == "2025":
 
