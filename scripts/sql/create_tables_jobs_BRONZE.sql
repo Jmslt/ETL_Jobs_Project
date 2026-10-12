@@ -2,7 +2,7 @@ USE bronze_tfe
 GO
 
 
-IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'jobs_data')
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'jobs_postings')
 	BEGIN
 		CREATE TABLE jobs_postings (
 			job_id INT UNIQUE NOT NULL,
