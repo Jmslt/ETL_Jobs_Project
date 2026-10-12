@@ -19,13 +19,14 @@ def load_to_bronze():
             df_survey = pl.read_csv(file.path, row_index_name="answer_id")
             file_year = file.name[0:4]
             df_survey = df_survey.with_columns([pl.lit(file_year).alias("survey_year")])
+            df_survey = df_survey.with_columns(pl.col(pl.String).replace("NA", None))
 
         else:
             df_survey = pl.read_csv(file.path)
             file_year = file.name[0:4]
             df_survey = df_survey.with_row_index("answer_id", offset=current_offset)
             df_survey = df_survey.with_columns([pl.lit(file_year).alias("survey_year")])
-
+            df_survey = df_survey.with_columns(pl.col(pl.String).replace("NA", None))
 
 
 
