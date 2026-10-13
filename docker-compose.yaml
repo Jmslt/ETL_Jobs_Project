@@ -333,5 +333,25 @@ services:
       airflow-init:
         condition: service_completed_successfully
 
+
+  mssql_db:
+    container_name: sql_tfe
+    image: ${MSSQL_IMAGE:-mcr.microsoft.com/mssql/server:2025-latest}
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: ${MSSQL_PRODUCT_ID:-Developer}
+      SA_PASSWORD: "Admin12345!"
+    ports:
+      - "${MSSQL_PORT:-1433}:1433"
+    restart: unless-stopped
+
+networks:
+  env_net:
+    external: true
+    driver: bridge
+
+
 volumes:
   postgres-db-volume:
+
+
