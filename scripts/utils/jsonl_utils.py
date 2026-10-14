@@ -32,7 +32,7 @@ def validateJSONL(file, nbrOfCharsBefore=5, nbrOfCharsAfter=0, printLine=False):
 #               print(f"Error characters: {errorCharsStr}")
                 continue
         print(f"There are {countErrors} errors in jsonl file ")
-        print("The errors were related to the characters: \n")
+        print(f"The errors were related to the characters: \n {errorCharsSet}")
         return errorCharsSet
 
 
