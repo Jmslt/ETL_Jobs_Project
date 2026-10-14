@@ -1,3 +1,6 @@
 resources/__pycache__
 __pycache__
 modelization/*lo1
+data/
+.env
+logs/
