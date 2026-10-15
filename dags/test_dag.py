@@ -4,7 +4,6 @@ from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 import os
 
 from utils.jsonl_utils import validateJSONL, cleanJSONL
-from utils.sql_server_utils import generate_conn_string
 
 
 @task(task_id = "validate_jsonl_files")
@@ -22,13 +21,11 @@ def clean_jsonl_files():
             cleanJSONL(file)
     print("Cleaning over.")
 
-@task(task_id="create_bronze_db")
-def create_bronze_db():
-    sql1 = SQLExecuteQueryOperator(
-        task_id="create_bronze_db",
-        conn_id= mssql.MsSqlHook.get_conn(generate_conn_string("master")),
-        sql=r"CREATE DATABASE testdb;",
-        autocommit=True
+sql1 = SQLExecuteQueryOperator(
+    task_id="create_bronze_db",
+    conn_id= "mssql_default",
+    sql="sql/create_db_bronze.sql",
+    autocommit=True
     )
 
 @dag(
@@ -38,8 +35,9 @@ def create_bronze_db():
 def generate_dag():
     task1 = validate_jsonl_files()
     task2 = clean_jsonl_files()
-    task3 = create_bronze_db()
+    task3 = sql1
 
-#    task1 >> task2 >> task3
-    task3
+    task1 >> task2 >> task3
+
+
 generate_dag()

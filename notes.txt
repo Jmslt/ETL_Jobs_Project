@@ -68,3 +68,15 @@ tables in Bronze.
 
 I have not yet checked how to deal with the main Table survey_answers, but I think the solution will
 be to rearrange columns so that 'survey_year' is on 3rd position before writing to table.
+
+----
+
+15/10
+
+On Airflow:
+- The easiest was to add the sql server to the docker compose
+- I wanted ot use Airflow's connector directly instead of relying on SQLalchemy
+- Best way to do this was to add a MSSQL connection string to Airflow, and to install the MSSQL connector package inside
+  Airflow (using the PIP env variable in the docker compose)
+- Last problem was to use the correct server name in the connection string: localhost is usable by the client on the
+  host machine, but to connect 2 different services in the same docker compose I needed to use the service name (sql_tfe)
