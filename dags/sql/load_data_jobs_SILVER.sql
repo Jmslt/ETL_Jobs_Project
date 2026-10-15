@@ -1,6 +1,3 @@
-USE silver_tfe
-GO
-
 INSERT INTO jobs.jobs_postings 
 	SELECT *
 	FROM jobs.vw_jobs_postings;

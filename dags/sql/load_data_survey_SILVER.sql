@@ -1,6 +1,3 @@
-USE silver_tfe
-GO
-
 INSERT INTO survey.survey_answers 
 	SELECT *
 	FROM survey.vw_survey_answers;

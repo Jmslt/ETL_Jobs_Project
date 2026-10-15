@@ -1,6 +1,3 @@
-USE silver_tfe
-GO
-
 CREATE VIEW survey.vw_survey_answers
 AS
 SELECT 

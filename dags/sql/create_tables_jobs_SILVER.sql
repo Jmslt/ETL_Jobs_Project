@@ -1,5 +1,4 @@
 USE silver_tfe
-GO
 
 IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'jobs')
 	BEGIN

@@ -67,6 +67,8 @@ x-airflow-common:
     AIRFLOW__API_AUTH__JWT_SECRET: ${AIRFLOW__API_AUTH__JWT_SECRET:-airflow_jwt_secret}
     AIRFLOW__API_AUTH__JWT_ISSUER: ${AIRFLOW__API_AUTH__JWT_ISSUER:-airflow}
     AIRFLOW_CONN_MSSQL_DEFAULT: mssql://sa:Admin12345!@sql_tfe:1433/master
+    AIRFLOW_CONN_MSSQL_SILVER: mssql://sa:Admin12345!@sql_tfe:1433/silver_tfe
+    AIRFLOW_CONN_MSSQL_GOLD: mssql://sa:Admin12345!@sql_tfe:1433/gold_tfe
     # yamllint disable rule:line-length
     # Use simple http server on scheduler for health checks
     # See https://airflow.apache.org/docs/apache-airflow/stable/administration-and-deployment/logging-monitoring/check-health.html#scheduler-health-check-server

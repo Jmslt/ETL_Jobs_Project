@@ -1,6 +1,3 @@
-USE silver_tfe
-GO
-
 CREATE VIEW jobs.vw_jobs_postings
 AS
 SELECT 
@@ -85,6 +82,3 @@ AS
 	JOIN bronze_tfe.dbo.jobs_postings as b_postings
 		ON b_skills.job_id = b_postings.job_id
 	WHERE b_postings.is_tech = 'true';
-
-
-

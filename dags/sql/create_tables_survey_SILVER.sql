@@ -1,11 +1,9 @@
 USE silver_tfe
-GO
 
 IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'survey')
 	BEGIN
 		EXEC ('CREATE SCHEMA survey')
 	END
-GO
 
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'survey_answers')
 	BEGIN
