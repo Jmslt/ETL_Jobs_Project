@@ -83,3 +83,9 @@ On Airflow:
 
 - The keyword GO in TSQL is not useable correctly with Airflow's connector. The GO keyword is a clientside function, not
   sql server side. This means I have to be careful with the order of my SQL statements.
+
+- It is easier to create different connections to the Silver and Gold DB in order to use the right schemas; it is too
+  difficult to use SQL code like 'USE DB' because we cannot use GO.
+- For views, I needed to set the SQL execution 'split_statements' to True. Apparently it takes a SQL string (here,
+  a file) and divides it into statements, replacing the need for GO. I did not try without ';' a the end of CREATE
+statements, but it works with them.

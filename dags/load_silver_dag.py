@@ -2,7 +2,8 @@ from airflow.sdk import task, dag, DAG
 from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 
 with DAG(
-    dag_id="TFE_load_silver"
+    dag_id="TFE_load_silver",
+    tags=["tfe", "silver"]    
 ) as dag:
     sql_create_db_silver = SQLExecuteQueryOperator(
         task_id="sql_create_db_silver",
