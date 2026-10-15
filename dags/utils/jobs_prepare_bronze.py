@@ -3,11 +3,11 @@ import polars as pl
 
 import os
 
-from schema_override_jobs import list_columns_complete, get_schema_jobs_pl, get_schema_nolist
-from sql_server_utils import generate_conn_string, create_sqlserver_engine
+from utils.schema_override_jobs import list_columns_complete, get_schema_jobs_pl, get_schema_nolist
+from utils.sql_server_utils import generate_conn_string, create_sqlserver_engine
 
 
-def load_to_bronze():
+def load_jobs_to_bronze():
     file_nbr = 0
     current_offset = 0
     conn_string = generate_conn_string("bronze_tfe")

@@ -1,5 +1,4 @@
 USE bronze_tfe
-GO
 
 
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'survey_answers')

@@ -80,3 +80,6 @@ On Airflow:
   Airflow (using the PIP env variable in the docker compose)
 - Last problem was to use the correct server name in the connection string: localhost is usable by the client on the
   host machine, but to connect 2 different services in the same docker compose I needed to use the service name (sql_tfe)
+
+- The keyword GO in TSQL is not useable correctly with Airflow's connector. The GO keyword is a clientside function, not
+  sql server side. This means I have to be careful with the order of my SQL statements.
