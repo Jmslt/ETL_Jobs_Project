@@ -29,7 +29,7 @@ def clean_jsonl_files():
 sql_create_db_bronze = SQLExecuteQueryOperator(
     task_id="create_bronze_db",
     conn_id= "mssql_default",
-    sql="sql/bronze/create_db_bronze.sql",
+    sql="sql/bronze/create_db_BRONZE.sql",
     autocommit=True
     )
 
