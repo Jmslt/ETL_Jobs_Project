@@ -1,5 +1,3 @@
-USE tfe_gold
-
 INSERT INTO jobs.BR_jobs_skills
 	SELECT skill_id, job_id
 	FROM jobs.vw_BR_jobs_skills;
