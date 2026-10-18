@@ -8,21 +8,21 @@ with DAG(
     sql_create_db_silver = SQLExecuteQueryOperator(
         task_id="sql_create_db_silver",
         conn_id="mssql_default",
-        sql="sql/create_db_SILVER.sql",
+        sql="sql/silver/create_db_SILVER.sql",
         autocommit=True
 )
 
     sql_create_tables_jobs_silver = SQLExecuteQueryOperator(
         task_id="sql_create_tables_jobs_silver",
         conn_id="mssql_silver",
-        sql="sql/create_tables_jobs_SILVER.sql",
+        sql="sql/silver/create_tables_jobs_SILVER.sql",
         autocommit=True
 )
 
     sql_create_tables_survey_silver = SQLExecuteQueryOperator(
         task_id="sql_create_tables_survey_silver",
         conn_id="mssql_silver",
-        sql="sql/create_tables_survey_SILVER.sql",
+        sql="sql/silver/create_tables_survey_SILVER.sql",
         autocommit=True
 )
 
@@ -31,7 +31,7 @@ with DAG(
     sql_clean_unrealistic_salaries = SQLExecuteQueryOperator(
         task_id="sql_clean_unrealistic_salaries",
         conn_id="mssql_default",
-        sql="sql/clean_salaries_SURVEY_SILVER.sql",
+        sql="sql/silver/clean_salaries_SURVEY_SILVER.sql",
         autocommit=True
 )
 
@@ -39,7 +39,7 @@ with DAG(
     sql_create_views_jobs_silver = SQLExecuteQueryOperator(
         task_id="sql_create_views_jobs_silver",
         conn_id="mssql_silver",
-        sql="sql/create_views_jobs_SILVER.sql",
+        sql="sql/silver/create_views_jobs_SILVER.sql",
         split_statements=True,
         autocommit=True
 )
@@ -48,7 +48,7 @@ with DAG(
     sql_create_views_survey_silver = SQLExecuteQueryOperator(
         task_id="sql_create_views_survey_silver",
         conn_id="mssql_silver",
-        sql="sql/create_views_survey_SILVER.sql",
+        sql="sql/silver/create_views_survey_SILVER.sql",
         split_statements=True,
         autocommit=True
 )
@@ -57,7 +57,7 @@ with DAG(
     sql_load_data_jobs_silver = SQLExecuteQueryOperator(
         task_id="sql_load_data_jobs_silver",
         conn_id="mssql_silver",
-        sql="sql/load_data_jobs_SILVER.sql",
+        sql="sql/silver/load_data_jobs_SILVER.sql",
         autocommit=True
 )
 
@@ -65,7 +65,7 @@ with DAG(
     sql_load_data_survey_silver = SQLExecuteQueryOperator(
         task_id="sql_load_data_survey_silver",
         conn_id="mssql_silver",
-        sql="sql/load_data_survey_SILVER.sql",
+        sql="sql/silver/load_data_survey_SILVER.sql",
         autocommit=True
 )
 

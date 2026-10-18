@@ -29,14 +29,14 @@ def clean_jsonl_files():
 sql_create_db_bronze = SQLExecuteQueryOperator(
     task_id="create_bronze_db",
     conn_id= "mssql_default",
-    sql="sql/create_db_bronze.sql",
+    sql="sql/bronze/create_db_bronze.sql",
     autocommit=True
     )
 
 sql_create_tables_jobs_bronze = SQLExecuteQueryOperator(
     task_id="sql_create_tables_jobs_bronze",
     conn_id="mssql_default",
-    sql="sql/create_tables_jobs_BRONZE.sql",
+    sql="sql/bronze/create_tables_jobs_BRONZE.sql",
     autocommit=True
 )
 
@@ -47,7 +47,7 @@ def transform_and_load_jobs_bronze():
 sql_create_tables_survey_bronze = SQLExecuteQueryOperator(
     task_id="sql_create_tables_survey_bronze",
     conn_id="mssql_default",
-    sql="sql/create_tables_survey_BRONZE.sql",
+    sql="sql/bronze/create_tables_survey_BRONZE.sql",
     autocommit=True
 )
 
@@ -72,6 +72,3 @@ def generate_dag():
     task1 >> task2 >> task3 >> task4 >> task5 >> task6 >> task7
 
 generate_dag()
-
-#with DAG("test") as dag:
-#    task1 = load_survey_to_bronze() 
