@@ -69,6 +69,9 @@ x-airflow-common:
     AIRFLOW_CONN_MSSQL_DEFAULT: mssql://sa:Admin12345!@sql_tfe:1433/master
     AIRFLOW_CONN_MSSQL_SILVER: mssql://sa:Admin12345!@sql_tfe:1433/silver_tfe
     AIRFLOW_CONN_MSSQL_GOLD: mssql://sa:Admin12345!@sql_tfe:1433/gold_tfe
+    AIRFLOW__METRICS__STATSD_ON: 'true'
+    AIRFLOW__METRICS__STATSD_HOST: statsd-exporter
+    AIRFLOW__METRICS__STATSD_PORT: 8125
     # yamllint disable rule:line-length
     # Use simple http server on scheduler for health checks
     # See https://airflow.apache.org/docs/apache-airflow/stable/administration-and-deployment/logging-monitoring/check-health.html#scheduler-health-check-server
@@ -76,7 +79,7 @@ x-airflow-common:
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
     # WARNING: Use _PIP_ADDITIONAL_REQUIREMENTS option ONLY for a quick checks
     # for other purpose (development, test and especially production usage) build/extend Airflow image.
-    _PIP_ADDITIONAL_REQUIREMENTS: apache_airflow-providers-microsoft-mssql polars SQLAlchemy SQLAlchemy-Utils pyodbc mssql-python
+    _PIP_ADDITIONAL_REQUIREMENTS: apache_airflow-providers-microsoft-mssql polars SQLAlchemy SQLAlchemy-Utils pyodbc mssql-python apache-airflow[statsd]
     # The following line can be used to set a custom config file, stored in the local config folder
     AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
   volumes:
@@ -347,6 +350,28 @@ services:
       SA_PASSWORD: "Admin12345!"
     ports:
       - "${MSSQL_PORT:-1433}:1433"
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:main
+    volumes:
+#     - prometheus_data:/prometheus  To store data
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+
+  statsd-exporter:
+    image: prom/statsd-exporter:latest
+    container_name: airflow-statsd-exporter
+    command:
+      - --statsd.listen-udp=:8125
+      - --statsd.listen-tcp=:8125
+    ports:
+      - 9102:9102
+      - 8125:8125
+    volumes:
+      - ./statsd_mapping.yml:/etc/statsd_mapping.yml
     restart: unless-stopped
 
 networks:
