@@ -89,3 +89,17 @@ On Airflow:
 - For views, I needed to set the SQL execution 'split_statements' to True. Apparently it takes a SQL string (here,
   a file) and divides it into statements, replacing the need for GO. I did not try without ';' a the end of CREATE
 statements, but it works with them.
+
+----
+
+20/10
+
+PROMETHEUS: it works, but it's not very useful for now. I have to check the configuration files to see what made it
+finally work.
+
+Useful resources:
+
+https://www.redhat.com/en/blog/monitoring-apache-airflow-using-prometheus
+https://quay.io/repository/prometheus/statsd-exporter
+https://medium.com/@lorenzouriel/airflow-3-1-setup-with-celery-executor-and-statsd-for-monitoring-60b88e9f80e3
+https://dev.to/kirklewis/metrics-with-prometheus-statsd-exporter-and-grafana-5145
