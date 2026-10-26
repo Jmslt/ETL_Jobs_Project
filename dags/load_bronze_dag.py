@@ -1,4 +1,4 @@
-from airflow.sdk import task, dag, DAG
+from airflow.sdk import task, dag, DAG, Param
 from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 
 import os
@@ -41,8 +41,9 @@ sql_create_tables_jobs_bronze = SQLExecuteQueryOperator(
 )
 
 @task(task_id="transform_and_load_jobs_bronze")
-def transform_and_load_jobs_bronze():
-    load_jobs_to_bronze()
+def transform_and_load_jobs_bronze(**kwargs):
+    params = kwargs["params"]
+    load_jobs_to_bronze(fast_param=params["fast_insert"])
 
 sql_create_tables_survey_bronze = SQLExecuteQueryOperator(
     task_id="sql_create_tables_survey_bronze",
@@ -52,13 +53,17 @@ sql_create_tables_survey_bronze = SQLExecuteQueryOperator(
 )
 
 @task(task_id="transform_and_load_survey_bronze")
-def transform_and_load_survey_bronze():
-    load_survey_to_bronze()
+def transform_and_load_survey_bronze(**kwargs):
+    params = kwargs["params"]
+    load_survey_to_bronze(fast_param=params["fast_insert"])
 
 
 @dag(
     dag_id = "TFE_load_bronze",
-    tags=["tfe", "bronze"]
+    tags=["tfe", "bronze"],
+    params={
+        "fast_insert": Param(False, type="boolean", description="If you have more than 16Go of RAM, this reduces loading time by more than 50%. If you do not have enough RAM, leave it toggled OFF.")
+    }
 )
 def generate_dag():
     task1 = validate_jsonl_files()

@@ -7,11 +7,11 @@ from utils.schema_override_jobs import list_columns_complete, get_schema_jobs_pl
 from utils.sql_server_utils import generate_conn_string, create_sqlserver_engine
 
 
-def load_jobs_to_bronze():
+def load_jobs_to_bronze(fast_param):
     file_nbr = 0
     current_offset = 0
     conn_string = generate_conn_string("bronze_tfe")
-    sql_engine = create_sqlserver_engine(conn_string)
+    sql_engine = create_sqlserver_engine(conn_string, fast=fast_param)
     for file in os.scandir("data/jobs/"):
         df_postings = pl.DataFrame()
         if file_nbr == 0:

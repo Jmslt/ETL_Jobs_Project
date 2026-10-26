@@ -8,12 +8,12 @@ from utils.schema_override_survey import get_schema_survey_2025, get_schema_noli
 from utils.sql_server_utils import generate_conn_string, create_sqlserver_engine
 
 
-def load_survey_to_bronze():
+def load_survey_to_bronze(fast_param):
     file_nbr = 0
     current_offset = 0
     conn_string = generate_conn_string("bronze_tfe")
-    sql_engine = create_sqlserver_engine(conn_string)
-    for file in os.scandir("data/survey/"):
+    sql_engine = create_sqlserver_engine(conn_string, fast=fast_param)
+    for file in os.scandir("/opt/airflow/data/survey/"):
         df_survey = pl.DataFrame()
         if file_nbr == 0:
             df_survey = pl.read_csv(file.path, row_index_name="answer_id")

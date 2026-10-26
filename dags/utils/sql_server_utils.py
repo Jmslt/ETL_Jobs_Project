@@ -12,11 +12,11 @@ def generate_conn_string(db):
     return generated_conn_string
 
 
-def create_sqlserver_engine(conn_string, autocommit=False):
-    if autocommit is True:
+def create_sqlserver_engine(conn_string, fast=False):
+    if fast is True:
         #TODO check if possible with cursor
-        source_engine = create_engine(conn_string).execution_options(isolation_level="AUTOCOMMIT")
-    elif autocommit is False:
+        source_engine = create_engine(conn_string, fast_executemany=True)
+    elif fast is False:
         source_engine = create_engine(conn_string)
     return source_engine
 

@@ -7,7 +7,8 @@ from huggingface_hub import hf_hub_download
 REPO_ID = "istrelov/freehire-jobs"
 
 def download_archives_huggingface():
-    for file in range(1,4):
+    file_numbers = [3,7]
+    for number, file in enumerate(file_numbers):
         hf_hub_download(repo_id=REPO_ID, filename=f"freehire_jobs_part_00{file}.jsonl.gz", repo_type="dataset",
                     local_dir="/opt/airflow/data/jobs/archives")
 
