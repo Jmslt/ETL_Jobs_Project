@@ -24,9 +24,9 @@ def validate_jsonl(file, nbrOfCharsBefore=5, nbrOfCharsAfter=0, printLine=False)
             except json.JSONDecodeError as e:
                 if printLine is True:
                     print(f"Invalid JSON on line {line_number}")
-                error_chars_set = line[e.pos-nbrOfCharsBefore:e.pos+nbrOfCharsAfter]
+                error_chars = line[e.pos-nbrOfCharsBefore:e.pos+nbrOfCharsAfter]
                 count_errors += 1
-                error_chars_set.add(error_chars_set)
+                error_chars_set.add(error_chars)
                 continue
         print(f"There are {count_errors} errors in .jsonl file: {file.name}")
         print(f"The errors were related to the characters: \n {error_chars_set}")
