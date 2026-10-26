@@ -7,7 +7,7 @@ import json
 from fileinput import FileInput
 
 
-def validateJSONL(file, nbrOfCharsBefore=5, nbrOfCharsAfter=0, printLine=False):
+def validate_jsonl(file, nbrOfCharsBefore=5, nbrOfCharsAfter=0, printLine=False):
     '''Iterates over the lines of a jsonl file and
     validates the line is correct. If it is not
     valid jsonl, it will print the number of errors
@@ -16,31 +16,25 @@ def validateJSONL(file, nbrOfCharsBefore=5, nbrOfCharsAfter=0, printLine=False):
     => 5 is great for most cases'''
 
     with open(file, "r") as jsonlFile:
-        countErrors = 0
-        errorCharsSet = set()
+        count_errors = 0
+        error_chars_set = set()
         for line_number, line in enumerate(jsonlFile, start=1):
             try:
                 json.loads(line)
             except json.JSONDecodeError as e:
                 if printLine is True:
                     print(f"Invalid JSON on line {line_number}")
-#                print(f"Error: {e.msg}")
-#                print(f"Position: {e.pos}")
-                errorCharsStr = line[e.pos-nbrOfCharsBefore:e.pos+nbrOfCharsAfter]
-                countErrors += 1
-                errorCharsSet.add(errorCharsStr)
-#               print(f"Error characters: {errorCharsStr}")
+                error_chars_set = line[e.pos-nbrOfCharsBefore:e.pos+nbrOfCharsAfter]
+                count_errors += 1
+                error_chars_set.add(error_chars_set)
                 continue
-        print(f"There are {countErrors} errors in jsonl file ")
-        print(f"The errors were related to the characters: \n {errorCharsSet}")
-        return errorCharsSet
+        print(f"There are {count_errors} errors in .jsonl file: {file.name}")
+        print(f"The errors were related to the characters: \n {error_chars_set}")
+        return error_chars_set
 
-
-def cleanJSONL(file):
+def clean_jsonl(file):
     '''Cleans out the <doublequote> that makes
     the jsonl file unusable '''
     with FileInput(file, inplace=True) as jsonlFile:
         for line in jsonlFile:
             print(line.replace('\\\\"', ''), end='')
-            
-#regex: (<\/[a-z]>)?(?(1)\\\\\\\\|\\\\\\\\\")

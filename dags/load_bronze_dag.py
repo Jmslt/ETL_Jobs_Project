@@ -3,7 +3,7 @@ from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 
 import os
 
-from utils.jsonl_utils import validateJSONL, cleanJSONL
+from utils.jsonl_utils import validate_jsonl, clean_jsonl
 from utils.schema_override_jobs import get_schema_jobs_pl, get_schema_nolist, list_columns_complete
 from utils.jobs_prepare_bronze import load_jobs_to_bronze
 
@@ -16,14 +16,14 @@ def validate_jsonl_files():
     for file in os.scandir("data/jobs/"):
         if file.is_file():
             print("file: " + file.name)
-            validateJSONL(file, 3)
+            validate_jsonl(file, 3)
 
 @task(task_id = "clean_jsonl_files")
 def clean_jsonl_files():
     for file in os.scandir("data/jobs/"):
         if file.is_file():
             print("Cleaning file: " + file.name)
-            cleanJSONL(file)
+            clean_jsonl(file)
     print("Cleaning over.")
 
 sql_create_db_bronze = SQLExecuteQueryOperator(
