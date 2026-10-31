@@ -1,4 +1,5 @@
-# coding: utf-8
+'''This utility script contains the functions used during the
+cleaning and loading of jobs data to the Bronze layer.'''
 import polars as pl
 
 import os
@@ -12,11 +13,20 @@ LIST_TABLES = ["countries", "skills", "cities", "company_industries", "company_t
 
 
 def create_postings_df(file, offset):
+    '''
+    Creates a Polars Dataframe with all the data from a jobs file
+    '''
     df_postings = pl.read_ndjson(file.path, row_index_name="job_id", row_index_offset=offset, ignore_errors=True)
     return df_postings
 
 
 def create_col_df(df):
+    '''
+    Takes a Polars Dataframe as argument and creates a Dataframe
+    for each column with multiple values that we want to keep.
+    The multiple values are exploded and assigned an ID.
+    The different Dataframes are stored in a Dict.
+    '''
     dict_tables = {}
     for number, column in enumerate(LIST_COL):
         dict_tables[column] = (df.select("job_id", column)
@@ -26,6 +36,10 @@ def create_col_df(df):
 
 
 def load_cols_to_db(dict_df, fast_param):
+    '''
+    Takes the Dataframes from the dictionnary and loads them
+    into the Bronze layer of our DB.
+    '''
     conn_string = generate_conn_string("bronze_tfe")
     sql_engine = create_sqlserver_engine(conn_string, fast=fast_param)
     for df_name, df in dict_df.items():
@@ -33,6 +47,11 @@ def load_cols_to_db(dict_df, fast_param):
         df.write_database(table_name=df.table, connection=sql_engine, if_table_exists="append")
 
 def load_postings_to_db(file, fast_param, offset):
+    '''
+    Creates a new postings Dataframe, assigns it the correct
+    Index using a manually created offset, and loads it to
+    the Bronze layer of our DB.
+    '''
     conn_string = generate_conn_string("bronze_tfe")
     sql_engine = create_sqlserver_engine(conn_string, fast=fast_param)
     schema_complete = get_schema_jobs_pl()
@@ -46,6 +65,11 @@ def load_postings_to_db(file, fast_param, offset):
 
 
 def load_jobs_to_bronze(fast_param):
+    '''
+    Orchestrates the different utilities and calls them in the
+    correct order.
+    This is the utility that is called by the DAG in Airflow.
+    '''
     current_offset = 0
     
     for file in os.scandir("data/jobs/"):
