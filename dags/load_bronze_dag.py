@@ -53,9 +53,8 @@ sql_create_tables_survey_bronze = SQLExecuteQueryOperator(
 )
 
 @task(task_id="transform_and_load_survey_bronze")
-def transform_and_load_survey_bronze(**kwargs):
-    params = kwargs["params"]
-    load_survey_to_bronze(fast_param=params["fast_insert"])
+def transform_and_load_survey_bronze():
+    load_survey_to_bronze(fast_param=True)
 
 
 @dag(

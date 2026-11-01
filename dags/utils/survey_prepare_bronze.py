@@ -64,12 +64,14 @@ def create_skills_df(df, file):
             dict_skills_tables[column[0]] = dict_skills_tables[column[0]].rename({column[0]:table})
             dict_skills_tables[column[0]] = dict_skills_tables[column[0]].with_columns([pl.lit("True").alias("worked_with")])
             dict_skills_tables[column[0]] = dict_skills_tables[column[0]].with_columns([pl.lit("NA").alias("want_to_work_with")])
+            dict_skills_tables[column[0]] = dict_skills_tables[column[0]].with_columns(pl.col(pl.String).replace("NA", None))
             dict_skills_tables[column[0]].table = LIST_TABLES.get(table)
 
             dict_skills_tables[column[1]] = df.with_columns(pl.col(column[1]).explode(empty_as_null=True).str.split(";")).select("answer_id","ResponseId","survey_year",column[1]).explode(column[1],empty_as_null=True)
             dict_skills_tables[column[1]] = dict_skills_tables[column[1]].rename({column[1]:table})
             dict_skills_tables[column[1]] = dict_skills_tables[column[1]].with_columns([pl.lit("NA").alias("worked_with")])
             dict_skills_tables[column[1]] = dict_skills_tables[column[1]].with_columns([pl.lit("True").alias("want_to_work_with")])
+            dict_skills_tables[column[1]] = dict_skills_tables[column[1]].with_columns(pl.col(pl.String).replace("NA", None))
             dict_skills_tables[column[1]].table = LIST_TABLES.get(table)
 
     else:
@@ -79,12 +81,14 @@ def create_skills_df(df, file):
             dict_skills_tables[column[0]] = dict_skills_tables[column[0]].rename({column[0]:table})
             dict_skills_tables[column[0]] = dict_skills_tables[column[0]].with_columns([pl.lit("True").alias("worked_with")])
             dict_skills_tables[column[0]] = dict_skills_tables[column[0]].with_columns([pl.lit("NA").alias("want_to_work_with")])
+            dict_skills_tables[column[0]] = dict_skills_tables[column[0]].with_columns(pl.col(pl.String).replace("NA", None))
             dict_skills_tables[column[0]].table = LIST_TABLES.get(table)
 
             dict_skills_tables[column[1]] = df.with_columns(pl.col(column[1]).explode(empty_as_null=True).str.split(";")).select("answer_id","ResponseId","survey_year",column[1]).explode(column[1],empty_as_null=True)
             dict_skills_tables[column[1]] = dict_skills_tables[column[1]].rename({column[1]:table})
             dict_skills_tables[column[1]] = dict_skills_tables[column[1]].with_columns([pl.lit("NA").alias("worked_with")])
             dict_skills_tables[column[1]] = dict_skills_tables[column[1]].with_columns([pl.lit("True").alias("want_to_work_with")])
+            dict_skills_tables[column[1]] = dict_skills_tables[column[1]].with_columns(pl.col(pl.String).replace("NA", None))
             dict_skills_tables[column[1]].table = LIST_TABLES.get(table)
     return dict_skills_tables
 
