@@ -5,22 +5,51 @@
 ![Static Badge](https://img.shields.io/badge/Apache_Airflow-white%3Flogo%3Dapacheairflow?logo=apacheairflow&logoSize=auto&labelColor=grey&color=grey)
 ![Static Badge](https://img.shields.io/badge/Prometheus-white%3Flogo%3DPython?logo=prometheus&logoSize=auto&labelColor=grey&color=grey)
 
+
+![airflow](images/airflow.png)
+
+
+--------
+
+   * [Overview](#overview)
+   * [Modelization and Architecture](#modelization-and-architecture)
+      * [Modelization](#modelization)
+      * [Architecture](#architecture)
+   * [Tech Stack](#tech-stack)
+   * [Challenges of this project](#challenges-of-this-project)
+   * [Repository Organization](#repository-organization)
+   * [How to use](#how-to-use)
+      * [Dependencies](#dependencies)
+      * [Creating the containers](#create-the-containers)
+      * [Using the different services](#use-the-different-services)
+   * [Security Disclaimer](#security-disclaimer)
+
+---------
+
+
+
 # Overview
 
-This project was done at the end of my Data Engineer formation. This showcases some techonologies we have learned during the cursus.
-The goal was to take 2 datasets, clean them, and create a Data Warehouse (OLAP Database) to make them useable by Data Analysts.
+This project was done at the end of my **Data Engineer formation as my TFE** ("Travail de Fin D'education", or "End of formation project"). 
+
+
+This showcases **some** techonologies we have learned during the cursus.
+
+--------
+
+The goal was to take 2 datasets, clean them, and create a [Data Warehouse](https://en.wikipedia.org/wiki/Data_warehouse) using an [ETL](https://dataengineering.wiki/Concepts/Data+Pipeline#ETL+Pipeline+Example) Pipeline to make them useable by Data Analysts.
 
 
 My data comes from 2 sources:
-- The jobs postings data come from Freehire, an aggregator for jobs postings: https://huggingface.co/datasets/istrelov/freehire-jobs/tree/main
-- The survey data comes from the annual Stack Overflow survey: https://github.com/StackExchange/Survey/tree/main/packages/archive
+- The **jobs postings** data come from Freehire, an aggregator for jobs postings: https://huggingface.co/datasets/istrelov/freehire-jobs/tree/main
+- The **survey data comes** from the annual Stack Overflow survey: https://github.com/StackExchange/Survey/tree/main/packages/archive
 
 
 My goal was to be able to answer the following questions:
 - What are the IT skills in demand on the market?
 - What are the IT skills IT professionals do have?
 
-=> An analysis of supply of demand
+**=> An analysis of supply of demand**
 
 # Modelization and Architecture
 
@@ -34,18 +63,18 @@ Instead of having raw data and a finished Data Warehouse, we now have a middle l
 
 ### Architecture
 
-My solution runs entirely on Docker containers. The containers are setup and organized with Docker Compose. It contains:
-- The different Apache Airflow services (such as dag-processor, dag-scheduler, a Redis database ...)
-- An instance of a Microsoft SQL Server for our main database
-- A Prometheus layer for log collecting
+**My solution runs entirely on Docker containers.** The containers are setup and organized with Docker Compose.
+- Apache Airflow executes Python scripts using the Polars library to cleand and load the data in the Bronze layer of our database.
+- Once the data is in the SQL Server database, we use SQL directly to manipulate it. Airflow executes SQL scripts directly on the SQL Server.
+- Airflow generates logs that are translated and then transferred to Prometheus.
 
 # Tech Stack
 
-
+![pipeline](images/pipeline.png)
 
 # Challenges of this project
 
-Both datasets had columns with multiple values. In a relation SQL database, I needed to find a way to explode these values properly and find the correct model for a Data Warehouse. My solution makes extensive use of [bridge tables](https://en.wikipedia.org/wiki/Associative_entity) to resolve the multiple "many to many" relationships in my data.
+Both datasets had **columns with multiple values.** In a relational SQL database, I needed to find a way to explode these values properly and find the correct model for a Data Warehouse. My solution makes extensive use of [bridge tables](https://en.wikipedia.org/wiki/Associative_entity) to resolve the multiple "many to many" relationships in my data.
 
 
 The data also needed some cleaning. The Jobs Postings data, for example, is made of 20 .jsonl files, and none of them were valid .jsonl because of a problem with multiple escaped \\" that were not properly managed during the creation of the dataset.
@@ -61,6 +90,7 @@ I wanted my solution to be reproducible and easy to build/destroy. This added a 
     /dags            -> Dags run by Airflow
       | /utils       -> Python scripts called by the Dags  
       | /sql         -> SQL scripts called by the Dags  
+    /images          -> Images for the readme
     /modelization    -> Images of schemas for all layers in our database
 
     docker-compose.yaml    -> Configuration and organization of our Docker Containers
@@ -118,3 +148,11 @@ If you wish to connect to the SQL Server with a client such as SSMS or Dbeaver, 
     - password: Admin12345!
     - host: localhost
     - port: 1433
+
+
+# Security disclaimer
+
+This project is a portfolio project.
+
+
+As such, it uses default credentials for the different services involved. DO NOT deploy this in production or connect this to the internet.
