@@ -140,6 +140,9 @@ I wanted my solution to be reproducible and easy to build/destroy. This added a 
         - Password: airflow
     
   - Prometheus logs: http://localhost:9090/
+ 
+  - It takes around 12/13 minutes to trigger a full pipeline run in Airflow (DAG named: "1_TFE_full_pipeline") on a midrange laptop with 16Gb of RAM.
+  - If you have more than 16Gb of RAM, you can run the loading bronze dag with the fast_insert parameter, which cuts the loading time by half.
 
 --------
 
