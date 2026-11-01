@@ -22,6 +22,7 @@
       * [Dependencies](#dependencies)
       * [Creating the containers](#create-the-containers)
       * [Using the different services](#use-the-different-services)
+      * [Removing the containers](#removing-the-containers)
    * [Security Disclaimer](#security-disclaimer)
 
 ---------
@@ -149,6 +150,15 @@ If you wish to connect to the SQL Server with a client such as SSMS or Dbeaver, 
     - host: localhost
     - port: 1433
 
+
+-------
+### Removing the containers
+
+Once you want to destroy all the containers and delete this repository from your computer:
+
+    sudo docker compose down
+
+You can then safely remove this project's directory from your computer. All the containers are destroyed.
 
 # Security disclaimer
 
