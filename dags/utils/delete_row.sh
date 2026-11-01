@@ -1,1 +1,0 @@
-sed -i <linenbr> <file>

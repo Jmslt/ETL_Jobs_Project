@@ -33,10 +33,12 @@ list_columns_complete_2025 = [
 
 schema_complete_2025 = {}
 
+
 def get_schema_survey_2025():
     for col in list_columns_complete_2025:
         schema_complete_2025.update({col: pl.String})
     return schema_complete_2025
+
 
 def get_schema_nolist_2025(schema_complete_2025):
     list_col_remove_2025 = [
@@ -56,6 +58,7 @@ def get_schema_nolist_2025(schema_complete_2025):
         schema_no_list_2025.pop(col)
 
     return schema_no_list_2025
+
 
 list_columns_complete_22_24 = [
                 'answer_id',
@@ -91,10 +94,12 @@ list_columns_complete_22_24 = [
 
 schema_complete_22_24 = {}
 
+
 def get_schema_survey_22_24():
     for col in list_columns_complete_22_24:
         schema_complete_22_24.update({col: pl.String})
     return schema_complete_22_24
+
 
 def get_schema_nolist_22_24(schema_complete_22_24):
     list_col_remove_22_24 = [
@@ -109,11 +114,10 @@ def get_schema_nolist_22_24(schema_complete_22_24):
                 'MiscTechHaveWorkedWith',
                 'MiscTechWantToWorkWith',
                 'ToolsTechHaveWorkedWith',
-                'ToolsTechWantToWorkWith',]            
+                'ToolsTechWantToWorkWith',]
 
     schema_no_list_22_24 = schema_complete_22_24.copy()
     for col in list_col_remove_22_24:
         schema_no_list_22_24.pop(col)
 
     return schema_no_list_22_24
-

@@ -13,8 +13,12 @@ def generate_conn_string(db):
 
 
 def create_sqlserver_engine(conn_string, fast=False):
+    '''
+    Create a connection engine. If fast is True, it will enable
+    the "fast_executemany" option, making the process faster but
+    cost much more RAM.
+    '''
     if fast is True:
-        #TODO check if possible with cursor
         source_engine = create_engine(conn_string, fast_executemany=True)
     elif fast is False:
         source_engine = create_engine(conn_string)
