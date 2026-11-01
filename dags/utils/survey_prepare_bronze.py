@@ -1,4 +1,7 @@
-# coding: utf-8
+'''
+This utility script contains the functions needed to cleand and load
+the survey data to the Bronze layer on our DB.
+'''
 import polars as pl
 
 import os
@@ -25,7 +28,6 @@ LIST_COLUMNS_2025 = {
 }
 
 
-
 LIST_TABLES = {
     "language": "dbo.survey_programming_languages",
     "database": "dbo.survey_databases",
@@ -38,13 +40,22 @@ LIST_TABLES = {
 
 
 def create_answers_df(file, offset):
+    '''
+    Creates a Polars Dataframe with all answers from the survey
+    '''
     df_survey = pl.read_csv(file.path, row_index_name="answer_id", row_index_offset=offset, ignore_errors=True)
     file_year = file.name[0:4]
     df_survey = df_survey.with_columns([pl.lit(file_year).alias("survey_year")])
     df_survey = df_survey.with_columns(pl.col(pl.String).replace("NA", None))
     return df_survey
 
+
 def create_skills_df(df, file):
+    '''
+    Creates a Polars Dataframe for each types of skill considered by the
+    surveys.
+    For the 2025 survey, the category "SOTag" is equivalent to misc_techs.
+    '''
     dict_skills_tables = {}
     if file.name[0:4] == "2025":
         for table, column in LIST_COLUMNS_2025.items():
@@ -93,9 +104,11 @@ def load_skills_to_db(dict_df, fast_param):
 
 def load_answers_to_db(file, fast_param, offset):
     '''
-    Creates a new postings Dataframe, assigns it the correct
+    Creates a new amswers Dataframe, assigns it the correct
     Index using a manually created offset, and loads it to
     the Bronze layer of our DB.
+    The 2025 survey has a different number of columns, so we use
+    a different schema.
     '''
     conn_string = generate_conn_string("bronze_tfe")
     sql_engine = create_sqlserver_engine(conn_string, fast=fast_param)
@@ -127,6 +140,10 @@ def load_answers_to_db(file, fast_param, offset):
 
 
 def load_survey_to_bronze(fast_param):
+    '''
+    This function orchestrates the whole process.
+    This is the function called by the Airflow DAG.
+    '''
     current_offset = 0
 
     for file in os.scandir("data/survey/"):
@@ -135,6 +152,3 @@ def load_survey_to_bronze(fast_param):
         dict_skills_tables = create_skills_df(answers_df, file)
         load_skills_to_db(dict_skills_tables, fast_param)
         current_offset = load_answers_to_db(file, fast_param, current_offset)
-
-if __name__ == "__main__":
-    load_survey_to_bronze(fast_param=False)
